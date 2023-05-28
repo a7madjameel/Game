@@ -11,10 +11,11 @@ class Game extends StatefulWidget {
 
 class _GameState extends State<Game> {
   int userImageChoice = 0;
-  int systemImageChoice = 0;
+  int systemImageChoice = 1;
   List<String> images = ['rock.png', 'paper.png', 'scissor.png'];
   int userScore = 0;
   int systemScore = 0;
+  String roundResult = '';
 
   @override
   Widget build(BuildContext context) {
@@ -54,6 +55,7 @@ class _GameState extends State<Game> {
                   setState(() {
                     userScore = 0;
                     systemScore = 0;
+                    roundResult = '';
                   });
                 },
                 child: const Text(
@@ -77,14 +79,15 @@ class _GameState extends State<Game> {
                   userImageChoice = Random().nextInt(3);
                   systemImageChoice = Random().nextInt(3);
                   if (systemImageChoice == userImageChoice) {
+                    roundResult = 'Result of the round: Draw';
                   } else if (systemImageChoice == 0 && userImageChoice == 1 ||
                       systemImageChoice == 1 && userImageChoice == 2 ||
                       systemImageChoice == 2 && userImageChoice == 0) {
                     userScore++;
-                  } else if (systemImageChoice == 1 && userImageChoice == 0 ||
-                      systemImageChoice == 2 && userImageChoice == 0 ||
-                      systemImageChoice == 2 && userImageChoice == 2) {
+                    roundResult = 'Result of the round: you Win';
+                  } else {
                     systemScore++;
+                    roundResult = 'Result of the round: Computer Win';
                   }
                 });
               },
@@ -98,7 +101,15 @@ class _GameState extends State<Game> {
               ),
             ),
             Image.asset('images/${images[systemImageChoice]}'),
+            const SizedBox(height: 70),
           ],
+        ),
+        Text(
+          roundResult,
+          style: const TextStyle(
+            fontSize: 20,
+            color: Colors.white,
+          ),
         ),
       ],
     );
